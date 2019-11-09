@@ -1,7 +1,15 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Lembrete {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String titulo, mensagem;
     private int status;
@@ -38,4 +46,3 @@ public class Lembrete {
         this.status = status;
     }
 }
-
