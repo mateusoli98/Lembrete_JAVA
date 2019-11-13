@@ -1,5 +1,6 @@
 package infra;
 
+import java.util.List;
 import model.Lembrete;
 
 public interface ILembreteDAO {
@@ -10,6 +11,5 @@ public interface ILembreteDAO {
 
     public boolean delete();
 
-    public boolean read();
-
+    public List<Lembrete> read();
 }

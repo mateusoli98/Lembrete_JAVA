@@ -3,6 +3,7 @@ package infra;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import model.Lembrete;
 
 public class LembreteDAO extends ConnectionFactory implements ILembreteDAO {
@@ -46,7 +47,7 @@ public class LembreteDAO extends ConnectionFactory implements ILembreteDAO {
     }
 
     @Override
-    public boolean read() {
+    public List<Lembrete> read() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

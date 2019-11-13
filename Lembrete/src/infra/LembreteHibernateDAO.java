@@ -1,6 +1,9 @@
 package infra;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import model.Lembrete;
 
 public class LembreteHibernateDAO implements ILembreteDAO {
@@ -12,12 +15,13 @@ public class LembreteHibernateDAO implements ILembreteDAO {
             em.getTransaction().begin();
             em.persist(lembrete);
             em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
-            return false;
+            System.out.println(e.getMessage());
         } finally {
             em.close();
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -31,8 +35,20 @@ public class LembreteHibernateDAO implements ILembreteDAO {
     }
 
     @Override
-    public boolean read() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Lembrete> read() {
+        List<Lembrete> listaLembrete = new ArrayList<>();
+        EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("from Lembrete");
+            listaLembrete = query.getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return listaLembrete;
     }
 
 }
