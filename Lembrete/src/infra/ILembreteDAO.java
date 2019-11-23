@@ -5,11 +5,15 @@ import model.Lembrete;
 
 public interface ILembreteDAO {
 
-    public boolean create(Lembrete lembrete);
+    public boolean salvar(Lembrete l);
 
-    public boolean update();
+    public void alterar(Lembrete l);
 
-    public boolean delete();
+    public void excluir(Lembrete l);
 
-    public List<Lembrete> read();
+    public List<Lembrete> recuperarTodos();
+
+    public Lembrete recuperaByID(long id);
+
+    public List<Lembrete> recuperaByTitulo(String Titulo);
 }

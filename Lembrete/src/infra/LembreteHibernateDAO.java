@@ -9,46 +9,115 @@ import model.Lembrete;
 public class LembreteHibernateDAO implements ILembreteDAO {
 
     @Override
-    public boolean create(Lembrete lembrete) {
+    public boolean salvar(Lembrete l) {
+        //cria um gerenciador de entidades
         EntityManager em = ConnectionFactoryHibernate.getEntityManager();
         try {
+            //abrir uma transacao
             em.getTransaction().begin();
-            em.persist(lembrete);
+            //solicita ao gerenciador que salve a entidade
+            em.persist(l);
+            //fechar a transacao
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } finally {
+            //encerra o gerenciador de entidades
             em.close();
         }
         return false;
     }
 
     @Override
-    public boolean update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Lembrete> read() {
-        List<Lembrete> listaLembrete = new ArrayList<>();
-        EntityManager em = ConnectionFactoryHibernate.getEntityManager();
-
+    public void alterar(Lembrete l) {
         try {
+            //cria um gerenciador de entidades
+            EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+            //abrir uma transacao
             em.getTransaction().begin();
-            Query query = em.createQuery("from Lembrete");
-            listaLembrete = query.getResultList();
+            //solicita ao gerenciador atualizar a entidade
+            em.merge(l);
+            //fechar a transacao
+            em.getTransaction().commit();
+            //encerra o gerenciador de entidades
+            em.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void excluir(Lembrete l) {
+        try {
+            //cria um gerenciador de entidades
+            EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+            //abrir uma transacao
+            em.getTransaction().begin();
+            //informa que o objeto é gerenciado pela sessao
+            l = em.merge(l);
+            //solicita ao gerenciador remover a entidade
+            em.remove(l);
+            //fechar a transacao
+            em.getTransaction().commit();
+            //encerra o gerenciador de entidades
+            em.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
-            em.close();
         }
-        return listaLembrete;
+    }
+
+    @Override
+    public List<Lembrete> recuperarTodos() {
+        List<Lembrete> lembretes = new ArrayList<>();
+
+        try {
+            //cria um gerenciador de entidades
+            EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+            //solicita ao gerenciador todas as instâncias da classe Lembrete
+            Query query = em.createQuery("from Lembrete");
+            lembretes = query.getResultList();
+            //encerra o gerenciador de entidades
+            em.close();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return lembretes;
+    }
+
+    @Override
+    public Lembrete recuperaByID(long id) {
+        Lembrete lembrete = new Lembrete();
+        try {
+            //cria um gerenciador de entidades
+            EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+
+            /* busca na tabela da correspondende a classe Lembrete 
+            uma entidade com chave primária = id*/
+            lembrete = em.find(Lembrete.class, id);
+
+            //encerra o gerenciador de entidades
+            em.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lembrete;
+    }
+
+    @Override
+    public List<Lembrete> recuperaByTitulo(String titulo) {
+        List<Lembrete> lembretes = new ArrayList<>();
+        try {
+            //cria um gerenciador de entidades
+            EntityManager em = ConnectionFactoryHibernate.getEntityManager();
+            Query query = em.createQuery("from Lembrete l where l.titulo Like :titulo").setParameter("titulo", "%" + titulo + "%");
+            lembretes = query.getResultList();
+            //encerra o gerenciador de entidades
+            em.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lembretes;
     }
 
 }

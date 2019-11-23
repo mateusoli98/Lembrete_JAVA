@@ -1,48 +1,58 @@
 package model;
 
+import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Lembrete {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String titulo, mensagem;
-    private int status;
+    private long id;
+    private String titulo;
+    private String descricao;
 
-    public int getId() {
-        return id;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar dataCriacao;
+    
+    public Lembrete() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public long getId() {
+        return id;
     }
 
     public String getTitulo() {
         return titulo;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    @Override
+    public String toString() {
+        return "Lembrete{" + "id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", dataCriacao=" + dataCriacao + '}';
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

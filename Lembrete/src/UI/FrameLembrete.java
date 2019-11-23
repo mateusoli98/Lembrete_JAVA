@@ -30,6 +30,7 @@ public class FrameLembrete extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         lblResultadoLembrete = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -102,10 +103,17 @@ public class FrameLembrete extends javax.swing.JFrame {
         });
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 0, 20, 30));
 
+        jScrollPane1.setBackground(new java.awt.Color(36, 113, 163));
+
+        lblResultadoLembrete.setBackground(new java.awt.Color(36, 113, 163));
         lblResultadoLembrete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblResultadoLembrete.setForeground(new java.awt.Color(255, 255, 255));
+        lblResultadoLembrete.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblResultadoLembrete.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel3.add(lblResultadoLembrete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 390, 490));
+        lblResultadoLembrete.setAlignmentY(1.0F);
+        lblResultadoLembrete.setAutoscrolls(true);
+        jScrollPane1.setViewportView(lblResultadoLembrete);
+
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 400, 500));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 450, 550));
 
@@ -122,7 +130,7 @@ public class FrameLembrete extends javax.swing.JFrame {
     private void btnCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarActionPerformed
         Lembrete lem = new Lembrete();
         lem = criarLembrete();
-        if (lemDAO.create(lem)) {
+        if (lemDAO.salvar(lem)) {
             lblStatus.setText("Lembrete cadastrado com sucesso");
         } else {
             lblStatus.setText("Não foi possível cadastrar o lembrete");
@@ -133,7 +141,7 @@ public class FrameLembrete extends javax.swing.JFrame {
     private Lembrete criarLembrete() {
         Lembrete lem = new Lembrete();
         lem.setTitulo(txtTitulo.getText());
-        lem.setMensagem(txtMensagem.getText());
+        lem.setDescricao(txtMensagem.getText());
         return lem;
     }
     
@@ -141,10 +149,10 @@ public class FrameLembrete extends javax.swing.JFrame {
     private void getListLembretes(){
         lblResultadoLembrete.setText("Carregando...");
         List<Lembrete> listLem =  new ArrayList<>();
-        listLem = lemDAO.read();
+        listLem = lemDAO.recuperarTodos();
         String listaLembretes ="<html>";
         for (Lembrete lem: listLem) {
-            listaLembretes += lem.getTitulo() + "<br>Mensagem: " + lem.getMensagem();
+            listaLembretes += lem.getTitulo() + "<br>Mensagem: " + lem.getDescricao() + "<br><br>";
         }
         listaLembretes += "</html>";
         
@@ -156,7 +164,7 @@ public class FrameLembrete extends javax.swing.JFrame {
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Default".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -179,6 +187,7 @@ public class FrameLembrete extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblResultadoLembrete;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JTextField txtMensagem;
